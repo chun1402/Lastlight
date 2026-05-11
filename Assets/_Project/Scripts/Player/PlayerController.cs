@@ -3,10 +3,9 @@ using UnityEngine.InputSystem;
 
 namespace Lastlight.Player
 {
-    /// <summary>
     /// 1인칭 캐릭터 이동 및 시점 컨트롤러
     /// (Unity 6 Project-wide Input Actions 사용)
-    /// </summary>
+
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
@@ -23,6 +22,11 @@ namespace Lastlight.Player
 
         [Header("Animation")]
         [SerializeField] private Animator animator;
+
+        [Header("Head Tracking")]
+        [SerializeField] private Transform headBone;
+        [SerializeField] private float headPitchRatio = -1.0f;
+        [SerializeField] private Vector3 headRotationOffset = Vector3.zero;
 
         // Animator 파라미터 해시
         private static readonly int MoveMotionHash = Animator.StringToHash("MoveMotion");
@@ -93,9 +97,7 @@ namespace Lastlight.Player
 
         // ────────────── Movement Logic ──────────────
 
-        /// <summary>
         /// 마우스로 시점 회전
-        /// </summary>
         private void HandleLook()
         {
             Vector2 lookInput = lookAction.ReadValue<Vector2>();
@@ -103,13 +105,14 @@ namespace Lastlight.Player
             float mouseX = lookInput.x * mouseSensitivity;
             float mouseY = lookInput.y * mouseSensitivity;
 
-            // 좌우 회전: 본체 회전 (이동 방향도 같이 바뀜)
+            // 좌우 회전: 본체 회전
             transform.Rotate(Vector3.up, mouseX);
 
-            // 상하 회전: 카메라만 회전 (각도 제한)
+            // 상하 회전: 카메라 회전 (각도 제한)
             verticalRotation -= mouseY;
             verticalRotation = Mathf.Clamp(verticalRotation, -maxLookAngle, maxLookAngle);
 
+            // 카메라 X축 회전 (Spine 자식이 아니므로 직접 회전)
             if (cameraTransform != null)
                 cameraTransform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
         }
@@ -142,6 +145,20 @@ namespace Lastlight.Player
 
             // 최종 이동
             controller.Move((move + new Vector3(0, velocity.y, 0)) * Time.deltaTime);
+        }
+
+        private void LateUpdate()
+        {
+            if (headBone != null)
+            {
+                // 1. Spine 본 회전 (모델이 위/아래로 굽힘)
+                float pitch = verticalRotation * headPitchRatio;
+                headBone.localRotation *= Quaternion.Euler(
+                    headRotationOffset.x,
+                    headRotationOffset.y,
+                    pitch + headRotationOffset.z
+                );
+            }
         }
     }
 }
