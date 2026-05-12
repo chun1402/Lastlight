@@ -151,7 +151,7 @@ namespace Lastlight.Player
         {
             if (headBone != null)
             {
-                // 1. Spine 본 회전 (모델이 위/아래로 굽힘)
+                // Spine 회전만 적용 (모델이 마우스 따라 굽힘)
                 float pitch = verticalRotation * headPitchRatio;
                 headBone.localRotation *= Quaternion.Euler(
                     headRotationOffset.x,
@@ -159,6 +159,7 @@ namespace Lastlight.Player
                     pitch + headRotationOffset.z
                 );
             }
+            // 카메라 위치 추적 코드 삭제 - 카메라는 머리 높이에 고정
         }
     }
 }
