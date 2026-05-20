@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caafa633042441546bca45242ff9b52c, type: 3}
+  m_Name: Pistol_Data
+  m_EditorClassIdentifier: Assembly-CSharp::Lastlight.Weapons.WeaponData
+  weaponName: Pistol
+  damage: 25
+  fireRate: 5
+  range: 50
+  maxAmmo: 12
+  reloadTime: 1.5
+  isAutomatic: 0
+  muzzleFlashPrefab: {fileID: 4171051858075953094, guid: 25a6bd588ee932f4f8be552fd0fae250,
+    type: 3}
+  impactEffectPrefab: {fileID: 1067471869909948, guid: 5e02303289b3c494e8e185be0fbbd405,
+    type: 3}
+  fireSound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  emptySound: {fileID: 0}
